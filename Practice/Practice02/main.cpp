@@ -2,8 +2,32 @@
 #include <fstream>
 #include <iomanip>
 #include <cmath>
+#include <limits>
 
 const std::string BALANCE_FILE = "account_balance.txt"; //creates the file
+
+int getValidInt(const std::string& prompt) { //makes sure that the input value is an int
+    int value;
+    while(true) {
+        std::cout << prompt;
+        if(std::cin >> value) return value;
+        std::cin.clear(); // Clear error flag
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        std::cout << "Invalid input. Please enter a valid number.\n";
+    }
+}
+
+double getValidDouble(const std::string& prompt) { //makes sure the input value is an int
+    double value;
+    while(true) {
+        std::cout << prompt;
+        if(std::cin >> value) return value;
+        std::cin.clear(); // Clear error flag
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        std::cout << "Invalid input. Please enter a valid number.\n";
+    }
+}
+
 
 double readBalanceFromFile() { //reads the file and puts 100 bucks in it if the file is fresh
     std::ifstream file(BALANCE_FILE);
@@ -36,9 +60,7 @@ void checkBalance(double balance) { //checks current balance
 }
 
 double deposit(double& balance) { //function to depo money into account
-    double amount;
-    std::cout << "Enter deposit amount: ";
-    std::cin >> amount;
+    double amount = getValidDouble("Enter deposit amount: "); //calling the function
     if (amount <= 0) { //makes sure amount is positive
         std::cout << "Error: Deposit amount must be positive.\n";
         return balance;
@@ -50,9 +72,7 @@ double deposit(double& balance) { //function to depo money into account
 }
 
 double withdraw(double& balance) { //func to take money out of account
-    double amount;
-    std::cout << "Enter withdrawal amount: ";
-    std::cin >> amount;
+    double amount = getValidDouble("Enter withdraw amount: "); //calling the new function
     if (amount <= 0) { //makes sure amount is positive
         std::cout << "Error: Withdrawal amount must be positive.\n";
         return balance;
@@ -76,13 +96,13 @@ double interest(double balance) { //function to calculate potential interest
     double rate = 0.01; //not the best rates... consider swapping banks
     double intrestCalculator; 
 
-    std::cout << "Enter how many months you would like to keep your money with us: ";
-    std::cin >> months;
+    months = getValidInt("Enter how many months you would like to keep your money with us: "); //calling the new function
 
     intrestCalculator = calculateInterest(balance, rate, months); //calling the prior function
     std::cout << "You would earn $" << std::fixed << std::setprecision(2) << intrestCalculator << std::endl; //prints out potential interest
     return 0;
 }
+
 
 int main() {
 
@@ -98,9 +118,8 @@ int main() {
         std::cout << "3. Withdraw Money" << std::endl;
         std::cout << "4. Check Interest" << std::endl;
         std::cout << "5. Exit" << std::endl;
-        std::cout << "Enter your choice: ";
-        std::cin >> choice;
-
+        
+         choice = getValidInt("Enter your choice: ");
 
         switch (choice) { //choice for the menu
         case 1: checkBalance(balance); break;
