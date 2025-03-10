@@ -15,7 +15,7 @@ int getValidInt(const std::string& prompt) {
 
         // Try to read an integer
         if (std::cin >> value) {
-            // Check if there is any leftover input (e.g., a double or extra characters)
+            // Check if there is any leftover input
             if (std::cin.peek() == '.') {
                 std::cout << "Invalid input. A double is not allowed.\n";
                 std::cin.clear();
