@@ -70,7 +70,7 @@ public:
         Token token = board[r][c]; //token position
         const int directions[4][2] = { {1,0}, {0,1}, {1,1}, {1,-1} }; //goes through all directions: vertical, horizontal, left diagonal and right diagonal
 
-        for (const auto& direction : directions) { //mpre comments
+        for (const auto& direction : directions) {
             int dr = direction[0]; //ups row count
             int dc = direction[1]; // ups col amount
             int count = 1; //makes the token placed have a count of one
