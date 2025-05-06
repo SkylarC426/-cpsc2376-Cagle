@@ -7,6 +7,7 @@ struct Point {
  
 // Function to calculate the midpoint between two points (returns a Point object)
 Point calcMidpoint(const Point* p1, const Point* p2) {
+    //implemented midpoint formula
     float midX = (p1->x + p2->x) /2.0f;
     float midY = (p1->y + p2->y) /2.0f;
     return Point{midX, midY};  // Placeholder return value
