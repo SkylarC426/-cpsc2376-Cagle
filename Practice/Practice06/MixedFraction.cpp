@@ -1,23 +1,37 @@
 #include "MixedFraction.h"
-#include <iostream>
+#include <cmath>
 
-MixedFraction::MixedFraction(int whole, int n, int d) : Fraction(n,d), whole(whole) {}
-
-MixedFraction::MixedFraction(const Fraction& fraction) {
-    whole = fraction.getNumerator() / fraction.getDenominator();
-    int numerator = fraction.getNumerator() % fraction.getDenominator();
-    int denominator = fraction.getDenominator();
-    *this = Fraction(numerator, denominator);
+// Constructor from whole, numerator, and denominator
+MixedFraction::MixedFraction(int whole, int n, int d) 
+    : Fraction(whole * d + (whole >= 0 ? n : -n), d) {
+    // If whole < 0, make sure numerator is negative
+    if (d == 0)
+        throw std::invalid_argument("Denominator cannot be zero");
 }
 
-std::ostream& operator<<(std::ostream& os, const MixedFraction& mixedFraction) {
-    if (mixedFraction.whole != 0) {
-        os << mixedFraction.whole;
-        if (mixedFraction.getNumerator() != 0) {
-            os << " " << mixedFraction.getNumerator() << "/" << mixedFraction.getDenominator();
-        }
+// Constructor from Fraction
+MixedFraction::MixedFraction(const Fraction& fraction)
+    : Fraction(fraction) {
+    // Uses base class constructor
+}
+
+// Output override for MixedFraction
+std::ostream& operator<<(std::ostream& os, const MixedFraction& mf) {
+    int n = mf.getNumerator();
+    int d = mf.getDenominator();
+
+    if (std::abs(n) < d) {
+        // Proper fraction
+        os << n << "/" << d;
     } else {
-        os << mixedFraction.getNumerator() << "/" << mixedFraction.getDenominator();
+        // Mixed fraction
+        int whole = n / d;
+        int remainder = std::abs(n % d);
+        if (remainder == 0)
+            os << whole;
+        else
+            os << whole << " " << remainder << "/" << d;
     }
+
     return os;
 }

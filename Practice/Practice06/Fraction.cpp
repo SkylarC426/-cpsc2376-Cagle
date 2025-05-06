@@ -1,86 +1,90 @@
 #include "Fraction.h"
-#include <algorithm>
 
-Fraction::Fraction() : numerator(0), denominator(1) {}
+// Default constructor: 0/1
+Fraction::Fraction() : num(0), den(1) {}
 
-Fraction::Fraction(int n, int d) : numerator(n), denominator(d) {
-    if (denominator == 0) {
-        throw std::invalid_argument("Denominator can not be 0");
-    } 
+// Parameterized constructor
+Fraction::Fraction(int n, int d) : num(n), den(d) {
+    if (d == 0)
+        throw std::invalid_argument("Denominator cannot be zero");
     simplify();
 }
 
+// Getters
 int Fraction::getNumerator() const {
-    return numerator;
+    return num;
 }
 
 int Fraction::getDenominator() const {
-    return denominator;
+    return den;
 }
 
+// Setters
 void Fraction::setNumerator(int n) {
-    numerator = n;
+    num = n;
     simplify();
 }
 
 void Fraction::setDenominator(int d) {
-    if (d == 0) {
-        throw std::invalid_argument("Denominator can not be 0");
-    }
-    denominator = d;
+    if (d == 0)
+        throw std::invalid_argument("Denominator cannot be zero");
+    den = d;
     simplify();
 }
 
+// Simplify using Euclidean algorithm
 void Fraction::simplify() {
-    if (den == 0) throw std::invalid_argument("Denominator cannot be zero");
- 
-    // Compute GCD using Euclidean algorithm
-    int a = num, b = den;
+    if (den == 0)
+        throw std::invalid_argument("Denominator cannot be zero");
+
+    int a = abs(num);
+    int b = abs(den);
     while (b != 0) {
         int temp = b;
         b = a % b;
         a = temp;
     }
-    int gcd = a; // GCD is stored in 'a' after loop exits
- 
-    // Simplify the fraction
+
+    int gcd = a;
     num /= gcd;
     den /= gcd;
 
-    if(den < 0) {
-        numerator = -numerator;
-        denominator = -denominator;
+    // Ensure denominator is positive
+    if (den < 0) {
+        num = -num;
+        den = -den;
     }
 }
 
+// Arithmetic operators
 Fraction operator+(const Fraction& lhs, const Fraction& rhs) {
-    int numerator = lhs.num * rhs.den + rhs.num * lhs.den;
-    int denominator = lhs.den * rhs.den;
-    return Fraction(numerator, denominator);
+    int n = lhs.num * rhs.den + rhs.num * lhs.den;
+    int d = lhs.den * rhs.den;
+    return Fraction(n, d);
 }
 
 Fraction operator-(const Fraction& lhs, const Fraction& rhs) {
-    int numerator = lhs.num * rhs.den - rhs.num * lhs.den;
-    int denominator = lhs.den * rhs.den;
-    return Fraction(numerator, denominator);
+    int n = lhs.num * rhs.den - rhs.num * lhs.den;
+    int d = lhs.den * rhs.den;
+    return Fraction(n, d);
 }
 
 Fraction operator*(const Fraction& lhs, const Fraction& rhs) {
-    int numerator = lhs.num * rhs.num;
-    int denominator = lhs.den * rhs.den;
-    return Fraction(numerator, denominator);
+    int n = lhs.num * rhs.num;
+    int d = lhs.den * rhs.den;
+    return Fraction(n, d);
 }
 
 Fraction operator/(const Fraction& lhs, const Fraction& rhs) {
-    if (rhs.num == 0) {
-        throw std::invalid_argument("Cannot divide by zero");
-    }
-    int numerator = lhs.num * rhs.den;
-    int denominator = lhs.den * rhs.num;
-    return Fraction(numerator, denominator);
+    if (rhs.num == 0)
+        throw std::invalid_argument("Division by zero");
+    int n = lhs.num * rhs.den;
+    int d = lhs.den * rhs.num;
+    return Fraction(n, d);
 }
 
-std::ostream& operator<<(std::ostream& os, const Fraction& fraction) {
-    os << fraction.num << "/" << fraction.den;
+// Output operator
+std::ostream& operator<<(std::ostream& os, const Fraction& f) {
+    os << f.num << "/" << f.den;
     return os;
 }

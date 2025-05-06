@@ -1,142 +1,75 @@
 #include <iostream>
 #include "Fraction.h"
 #include "MixedFraction.h"
+#include "Fraction.cpp"
+#include "MixedFraction.cpp"
 
-void menu() {
-    std::cout << "Current Fraction: ";
+void menu(const Fraction& current) {
+    std::cout << "\nCurrent Fraction: " << current << "\n";
+    std::cout << "Options:\n"
+              << "1. Enter a fraction manually\n"
+              << "2. Add a fraction\n"
+              << "3. Subtract a fraction\n"
+              << "4. Multiply by a fraction\n"
+              << "5. Divide by a fraction\n"
+              << "6. Display as Mixed Fraction\n"
+              << "7. Clear Fraction\n"
+              << "8. Exit\n";
+}
 
-    std::cout << "Options:\n" 
-    << "1. Enter a fraction manually\n"
-    << "2. Add a fraction\n"
-    << "3. Subtract a fraction\n"
-    << "4. Multiply by a fraction\n"
-    << "5. Divide by a fraction\n"
-    << "6. Display as Mixed Fraction\n"
-    << "7. Clear Fraction\n"
-    << "8. Exit\n";
+Fraction inputFraction() {
+    int n, d;
+    std::cout << "Enter numerator and denominator: ";
+    std::cin >> n >> d;
+    if (d == 0) throw std::invalid_argument("Denominator cannot be zero");
+    return Fraction(n, d);
 }
 
 int main() {
-    Fraction currentFraction;
-    int choice; 
+    Fraction current;
+    int choice;
 
     do {
-        menu();
+        menu(current);
         std::cout << "Enter your choice: ";
         std::cin >> choice;
 
-        switch (choice)
-        {
-        case 1: {
-            int numerator, denominator;
-            std::cout << "Enter the numerator and denominator: ";
-            std::cin >> numerator >> denominator;
-            
-            try
-            {
-                currentFraction = Fraction(numerator, denominator);
+        try {
+            switch (choice) {
+                case 1:
+                    current = inputFraction();
+                    break;
+                case 2:
+                    current = current + inputFraction();
+                    break;
+                case 3:
+                    current = current - inputFraction();
+                    break;
+                case 4:
+                    current = current * inputFraction();
+                    break;
+                case 5:
+                    current = current / inputFraction();
+                    break;
+                case 6: {
+                    MixedFraction mf(current);
+                    std::cout << "As Mixed Fraction: " << mf << "\n";
+                    break;
+                }
+                case 7:
+                    current = Fraction(); // reset to 0/1
+                    break;
+                case 8:
+                    std::cout << "Exiting...\n";
+                    break;
+                default:
+                    std::cout << "Invalid option. Try again.\n";
             }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << std::endl;
-            }
-            break;
+        } catch (const std::exception& e) {
+            std::cerr << "Error: " << e.what() << "\n";
         }
 
-        case 2: {
-            int numerator, denominator;
-            std::cout << "Enter the numerator and denominator for addition: ";
-            std::cin >> numerator >> denominator;
+    } while (choice != 8);
 
-            try
-            {
-                Fraction temp(numerator, denominator);
-                currentFraction = currentFraction + temp;
-                std::cout << "The result is: " << currentFraction << std::endl;
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-            break;
-        }
-            
-        case 3: {
-            int numerator, denominator;
-            std::cout << "Enter the numerator and denominator for subtraction: ";
-            std::cin >> numerator >> denominator;
-            
-            try
-            {
-                Fraction temp(numerator, denominator);
-                currentFraction = currentFraction - temp;
-                std::cout << "The result is: " << currentFraction << std::endl;
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-
-            break;
-        }
-        
-        case 4: {
-            int numerator, denominator;
-            std::cout << "Enter the numerator and denominator for multiplication: ";
-            std::cin >> numerator >> denominator;
-            
-            try
-            {
-                Fraction temp(numerator, denominator);
-                currentFraction = currentFraction * temp;
-                std::cout << "The result is: " << currentFraction << std::endl;
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-
-            break;
-        }
-
-        case 5: {
-            int numerator, denominator;
-            std::cout << "Enter the numerator and denominator for division: ";
-            std::cin >> numerator >> denominator;
-            
-            try
-            {
-                Fraction temp(numerator, denominator);
-                currentFraction = currentFraction / temp;
-                std::cout << "The result is: " << currentFraction << std::endl;
-            }
-            catch(const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-
-            break;
-        }
-        
-        case 6: {
-            MixedFraction mixed(currentFraction);
-            std::cout << "Mixed Fraction: " << mixed << std::endl;
-            break;
-        }
-
-        case 7: {
-            currentFraction = Fraction();
-            std::cout << "Fraction reset." << std::endl;
-            break;
-        }
-
-        case 8: 
-            std::cout << "Exiting program." << std::endl;
-            break;
-        
-        default:
-            std::cout << "Invalid choice. Try again." << std::endl;
-        }
-    } while(choice != 8);
     return 0;
 }

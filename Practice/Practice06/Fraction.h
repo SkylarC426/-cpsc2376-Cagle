@@ -3,12 +3,13 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <cmath>
+
 
 class Fraction {
     private:
-    int numerator;
-    int denominator;
+
+    int num;
+    int den;
 
     void simplify();
 
@@ -19,6 +20,7 @@ class Fraction {
 
     int getNumerator() const;
     int getDenominator() const;
+    
     void setNumerator(int n);
     void setDenominator(int d);
 
