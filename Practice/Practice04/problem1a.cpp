@@ -37,14 +37,17 @@ int main() {
     double result;
 
     do {
+        //displays menu
         std::cout << "1. Convert Celsius to Fahrenheit" << std::endl;
         std::cout << "2. Convert Fahrenheit to Celsius" << std::endl;
         std::cout << "3. Exit" << std::endl;
 
+        //gets choice and ensures its an int
         choice = getIntInput("Enter your choice as an int: ");
 
         switch (choice) {
             case 1:
+            //if 1 is input converts celcius to fahr
                 std::cout << "Enter the temperature in Celsius: ";
                 std::cin >> tempInput;
                 result = convertTemperature(tempInput, 'F');
@@ -52,6 +55,7 @@ int main() {
                 break;
 
             case 2:
+            //if 2 is selected converts fahr to celcius
                 std::cout << "Enter the temperature in Fahrenheit: ";
                 std::cin >> tempInput;
                 result = convertTemperature(tempInput, 'C');
@@ -59,10 +63,12 @@ int main() {
                 break;
 
             case 3:
+            //exits
                 std::cout << "Exiting the program.\n";
                 break;
 
             default:
+            //if unexpected output
                 std::cout << "Invalid choice, please try again.\n";
         }
 

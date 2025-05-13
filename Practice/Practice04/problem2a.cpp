@@ -4,6 +4,7 @@
 #include <iomanip> // for std::setprecision
 #include <limits>  // for std::numeric_limits
 
+//template for all the cases
 template <typename T>
 T calculate(T a, T b, char op) {
     switch (op) {
@@ -15,10 +16,12 @@ T calculate(T a, T b, char op) {
     }
 }
 
+//detects decimal
 bool isDouble(const std::string& s) {
     return s.find('.') != std::string::npos;
 }
 
+//makes sure there are no stray characters
 bool isValidNumber(const std::string& s) {
     std::istringstream iss(s);
     double temp;
@@ -27,10 +30,11 @@ bool isValidNumber(const std::string& s) {
 }
 
 int main() {
-    std::string input1, input2;
+    std::string input1;
+    std::string input2;
     char op;
 
-    // Input and validate first number
+    //inputs and validates first number
     while (true) {
         std::cout << "Enter first number: ";
         std::cin >> input1;
@@ -38,7 +42,7 @@ int main() {
         std::cout << "Invalid input. Please enter a valid number.\n";
     }
 
-    // Input and validate second number
+    //inputs and validates second number
     while (true) {
         std::cout << "Enter second number: ";
         std::cin >> input2;
@@ -46,7 +50,7 @@ int main() {
         std::cout << "Invalid input. Please enter a valid number.\n";
     }
 
-    // Input and validate operator
+    //inputs and validates operator
     while (true) {
         std::cout << "Enter operation (+, -, *, /): ";
         std::cin >> op;
@@ -54,30 +58,37 @@ int main() {
         std::cout << "Invalid operation. Please enter one of +, -, *, /.\n";
     }
 
-    // Handle double or int logic
+    //determines if its an int or double
     if (isDouble(input1) || isDouble(input2)) {
-        double a, b;
+        double a;
+        double b;
         std::stringstream(input1) >> a;
         std::stringstream(input2) >> b;
 
+        //checks for zeros 
         if (op == '/' && b == 0.0) {
             std::cout << "Error: Cannot divide by zero.\n";
             return 1;
         }
 
+        //perform calcs with set decimal place for tidyness
         double result = calculate<double>(a, b, op);
         std::cout << std::fixed << std::setprecision(2);
         std::cout << "Result: " << result << std::endl;
     } else {
-        int a, b;
+        //convers inputs to int
+        int a;
+        int b;
         std::stringstream(input1) >> a;
         std::stringstream(input2) >> b;
 
+        //checks for dividing zeros
         if (op == '/' && b == 0) {
             std::cout << "Error: Cannot divide by zero.\n";
             return 1;
         }
 
+        //preforms calcs
         int result = calculate<int>(a, b, op);
         std::cout << "Result: " << result << std::endl;
     }
